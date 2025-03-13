@@ -2,7 +2,9 @@
 
 A lightweight web server application for demonstration and testing purposes.
 
-![WebLab Interface](images/weblab_interface.png) ## Description
+![WebLab Interface](images/weblab_interface.png) 
+
+## Description
 
 WebLab is a simple and practical web server designed to provide a quick and easy environment for:
 
