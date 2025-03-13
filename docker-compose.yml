@@ -1,0 +1,11 @@
+version: '1.0'
+
+services:
+  web:
+    build: .  # Build the Docker image from the Dockerfile in the current directory
+    ports:
+      - "5000:5000"  # Map port 5000 from the host to port 5000 of the container
+    environment:
+      - FLASK_APP=app.py  # Environment variable for Flask
+      - FLASK_ENV=development # Development mode (debug enabled)
+      - LOCATION_NAME=Rennes # Name displayed on the page
