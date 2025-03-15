@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>My Website</title>  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>WEBLAB</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="container mt-5">
         <div class="text-center">
-            <img src="{{ url_for('static', filename='img/logo.png') }}" class="rounded-circle mb-3" width="150" height="150">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" class="rounded-circle mb-3" width="150"
+                height="150">
             <h1>{{ location_name }}</h1>
-            <p>Your IP Address: {{ user_ip }}</p>  {% if message %}
-                <div class="alert alert-{{ 'success' if success else 'danger' }}">
-                    {{ message }}
-                </div>
+            <p>Your IP Address: {{ user_ip }}</p>
+
+            {% if message %}
+            <div class="alert alert-{{ 'success' if success else 'danger' }}">
+                {{ message }}
+            </div>
             {% endif %}
 
-            <div class="mb-3">
-                <a href="{{ url_for('logs') }}" class="btn btn-info mt-3">
-                    <i class="fas fa-file-alt"></i> View Logs  </a>
+            <div class="mb-3"> <a href="{{ url_for('logs') }}" class="btn btn-info mt-3">
+                    <i class="fas fa-file-alt"></i> View Logs
+                </a>
             </div>
 
         </div>
@@ -27,7 +33,8 @@
             <div class="input-group">
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" name="file" id="fileInput">
-                    <label class="custom-file-label" for="fileInput">Choose a file</label>  </div>
+                    <label class="custom-file-label" for="fileInput">Choose a file</label>
+                </div>
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="submit">
                         <i class="fas fa-upload"></i> Upload
@@ -38,7 +45,8 @@
 
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h2>Available Files:</h2>  <a href="{{ url_for('refresh') }}" class="btn btn-secondary btn-sm">
+                <h2>Available Files:</h2>
+                <a href="{{ url_for('refresh') }}" class="btn btn-secondary btn-sm">
                     <i class="fas fa-sync-alt"></i> Refresh
                 </a>
             </div>
@@ -48,26 +56,51 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Select</th>  <th>Name</th>   <th>Extension</th>
-                                    <th>Size (MB)</th>  </tr>
-                            </thead>
-                            <tbody>
-                                {% for file in files %}
-                                <tr>
-                                    <td><input type="checkbox" name="selected_files" value="{{ file.name }}{{ file.ext }}"></td>
-                                    <td>{{ file.name }}</td>
-                                    <td>{{ file.ext }}</td>
-                                    <td>{{ file.size }}</td>
+                                    <th>Select</th>
+                                    <th>Name</th>
+                                    <th>Extension</th>
+                                    <th>Size (MB)</th>
                                 </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {% for file in files %}
+                                    <tr>
+                                        <td><input type="checkbox" name="selected_files"
+                                                value="{{ file.name }}{{ file.ext }}"></td>
+                                        <td>{{ file.name }}</td>
+                                        <td>{{ file.ext }}</td>
+                                        <td>{{ file.size }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                     </div>
                     <button type="submit" class="btn btn-success" name="download" value="download">
-                        <i class="fas fa-download"></i> Download Selected  </button>
+                        <i class="fas fa-download"></i> Download Selected
+                    </button>
                     <button type="submit" class="btn btn-danger" name="delete" value="delete">
-                        <i class="fas fa-trash-alt"></i> Delete Selected  </button>
+                        <i class="fas fa-trash-alt"></i> Delete Selected
+                    </button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 mb-5">
+        <h2 class="text-center mb-4">Other Test Pages</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card-deck">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Fake Login</h5>
+                            <p class="card-text">Access the fake login page.</p>
+                            <a href="{{ url_for('login') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i> Go to Fake Login
+                            </a>
+                        </div>
+                    </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -76,10 +109,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $('.custom-file-input').on('change', function() {
+        $('.custom-file-input').on('change', function () {
             let fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
     </script>
 </body>
+
 </html>

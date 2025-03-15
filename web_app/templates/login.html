@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="text-center">Login</h3>
+                        <a href="{{ url_for('index') }}" class="btn btn-sm btn-secondary">
+                            <i class="fas fa-home"></i> Back to Home
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('login') }}">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </form>
+                        {% if error %}
+                            <div class="alert alert-danger mt-3">{{ error }}</div>
+                        {% endif %}
+                        <div class="alert alert-info mt-3">
+                            Demo Account:<br>
+                            Username: <strong>test</strong><br>
+                            Password: <strong>test</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

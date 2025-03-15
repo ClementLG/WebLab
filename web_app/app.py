@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_from_directory, redirect, url_for
+from flask import Flask, render_template, request, send_from_directory, redirect, url_for, flash
 import os
 import random
 import logging
@@ -6,6 +6,7 @@ from logging.handlers import RotatingFileHandler
 import time  # Importation du module time
 
 app = Flask(__name__)
+app.secret_key = "FakeSecretKey"  # Important pour les sessions et les flash messages
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 if not os.path.exists(UPLOAD_FOLDER):
@@ -111,6 +112,26 @@ def logs():
         return render_template('logs.html', log_content=log_content)
     except FileNotFoundError:
         return "Logs non trouvés", 404
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Ici, vous implémenteriez votre logique d'authentification
+        # Dans cet exemple, nous allons simplement simuler une authentification réussie
+        if username == 'test' and password == 'test':
+            # Authentification réussie
+            flash('Login successful!', 'success')
+            app.logger.info(f"User '{username}' login successful")
+            return redirect(url_for('index'))  # Rediriger vers la page d'accueil
+        else:
+            # Authentification échouée
+            app.logger.error(f"User '{username}' : credentials invalid")
+            return render_template('login.html', error='Invalid credentials')
+
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
