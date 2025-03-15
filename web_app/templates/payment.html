@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        .payment-form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="payment-form">
+            <h2 class="text-center mb-4">Payment Details</h2>
+            <div class="text-center">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+            <form action="{{ url_for('process_payment') }}" method="POST">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="cardNumber" placeholder="Enter card number"
+                            required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fab fa-cc-visa"></i>
+                                <i class="fab fa-cc-mastercard"></i>
+                                <i class="fab fa-cc-amex"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cardName">Name on Card</label>
+                    <input type="text" class="form-control" id="cardName" placeholder="Enter name on card" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="cvv">CVV</label>
+                        <input type="text" class="form-control" id="cvv" placeholder="Enter CVV" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="billingAddress">Billing Address</label>
+                    <textarea class="form-control" id="billingAddress" placeholder="Enter billing address" rows="3"
+                        required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Pay Now</button>
+            </form>
+             <button id="autoFillButton" class="btn btn-info btn-sm mt-2">
+                <i class="fas fa-magic"></i> Auto-fill Demo Data
+            </button>
+        </div>
+        <div class="container mt-5">
+            <div class="alert alert-info col-md-6 offset-md-3">
+                Demo Data:<br>
+                Card Number: <strong>5127 8809 9999 9990</strong><br>
+                Name on Card: <strong>Bender Bending Rodríguez</strong><br>
+                Expiry Date: <strong>03/2030</strong><br>
+                CVV: <strong>737</strong><br>
+                Billing Address: <strong>Robot Arms, 00100100, New-New-York</strong>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#autoFillButton").click(function() {
+                $("#cardNumber").val("5127 8809 9999 9990");
+                $("#cardName").val("Bender Bending Rodríguez");
+                $("#expiryDate").val("03/2030");
+                $("#cvv").val("737");
+                $("#billingAddress").val("Robot Arms, 00100100, New-New-York");
+            });
+        });
+    </script>
+</body>
+
+</html>

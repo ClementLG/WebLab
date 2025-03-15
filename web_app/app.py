@@ -133,5 +133,14 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/payment')
+def payment():
+    return render_template('payment.html')
+
+@app.route('/process_payment', methods=['POST'])
+def process_payment():
+    app.logger.info(f"Fake payment processed")
+    return render_template('payment_result.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
