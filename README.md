@@ -12,6 +12,7 @@ WebLab is a simple and practical web server designed to provide a quick and easy
 * Testing web application functionality
 * Experimenting with file handling
 * Analyzing server logs
+* Simulating user authentication and payment processes
 
 It is built using Flask (a Python web framework) and is containerized with Docker for easy deployment and portability.
 
@@ -34,6 +35,21 @@ It is built using Flask (a Python web framework) and is containerized with Docke
 * Search and highlight specific log entries.
 * Navigate through search results.
 * Clear the logs.
+
+### Fake Login Page
+
+![Login_page](images/login_page.png)
+
+* Simulates a login page for testing authentication scenarios.
+* Provides a demonstration account for easy access.
+
+### Fake Payment Page
+
+![payment_page](images/payment_page.png)
+
+* Simulates a payment processing page for testing transaction flows.
+* Includes fields for credit card information.
+* Provides an option to auto-fill the form with test data.
 
 ### User Interface
 
@@ -92,6 +108,8 @@ The following environment variables can be configured in the `docker-compose.yml
 * **File Upload:** Use the file upload form on the main page to upload files to the server.
 * **File Download/Delete:** Select files from the list and use the buttons to download or delete them.
 * **Log Viewing:** Access the logs through the "View Logs" link on the main page. Use the search functionality to find specific entries.
+* **Fake Login:** Navigate to the login page through the link on the main page. Use the provided demo credentials to log in.
+* **Fake Payment:** Navigate to the payment page through the link on the main page. Fill in the payment details or use the auto-fill button for test data.
 
 ## Architecture
 ```
@@ -100,7 +118,10 @@ WebLab/
 │   ├── app.py       #   The main Flask application file
 │   ├── templates/   #   Directory containing HTML files (templates)
 │   │   ├── index.html #       The homepage with file management
-│   │   └── logs.html  #       The log display page
+│   │   ├── logs.html  #       The log display page
+│   │   ├── login.html #       The fake login page
+│   │   ├── payment.html #     The fake payment page
+│   │   └── payment_result.html # The fake payment result page
 │   └── static/      #   Directory containing static files (CSS, images, JS)
 │   │   └── img/       #       Directory containing images
 │   │       └── logo.png #           The application's logo
