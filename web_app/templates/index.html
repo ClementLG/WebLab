@@ -61,26 +61,27 @@
                                     <th>Extension</th>
                                     <th>Size (KB)</th>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                    {% for file in files %}
-                                    <tr>
-                                        <td><input type="checkbox" name="selected_files" value="{{ file.name }}{{ file.ext }}"></td>
-                                        <td>
-                                            {% if file.ext in ['.mp4', '.webm', '.ogg'] %}
-                                                <a href="{{ url_for('show_video', filename=file.name + file.ext) }}">
-                                                    {{ file.name }}
-                                                </a>
-                                            {% else %}
-                                                {{ file.name }}
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ file.ext }}</td>
-                                        <td>{{ file.size }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                            </thead>
+                            <tbody>
+                                {% for file in files %}
+                                <tr>
+                                    <td><input type="checkbox" name="selected_files"
+                                            value="{{ file.name }}{{ file.ext }}"></td>
+                                    <td>
+                                        {% if file.ext in ['.mp4', '.webm', '.ogg'] %}
+                                        <a href="{{ url_for('show_video', filename=file.name + file.ext) }}">
+                                            {{ file.name }}
+                                        </a>
+                                        {% else %}
+                                        {{ file.name }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ file.ext }}</td>
+                                    <td>{{ file.size }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                     <button type="submit" class="btn btn-success" name="download" value="download">
                         <i class="fas fa-download"></i> Download Selected
@@ -93,7 +94,7 @@
         </div>
     </div>
 
-    <div class="mt-5 mb-5">
+    <div class="mt-5 mb-2">
         <h2 class="text-center mb-4">Other Test Pages</h2>
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -116,6 +117,16 @@
                             </a>
                         </div>
                     </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card-deck">
                     <div class="card">
                         <div class="card-body text-center">
                             <h5 class="card-title">Advertisements</h5>
@@ -125,6 +136,17 @@
                             </a>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Network Tools</h5>
+                            <p class="card-text">Perform network tests like ping, traceroute, and iPerf.</p>
+                            <a href="{{ url_for('network_tools') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-network-wired me-2"></i> Go to Network Tools
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

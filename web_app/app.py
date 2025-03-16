@@ -5,6 +5,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 import time
 from werkzeug.utils import secure_filename
+import subprocess  # For executing commands
+from functions import *
 
 app = Flask(__name__)
 app.secret_key = "FakeSecretKey"  # Important pour les sessions et les flash messages
@@ -154,6 +156,101 @@ def uploaded_file(filename):
 @app.route('/ads')
 def show_ads():
     return render_template('ads.html')
+
+@app.route('/network_tools', methods=['GET', 'POST'])
+def network_tools():
+    result = None
+    tool = request.form.get('tool')
+
+    if request.method == 'POST':
+        target = request.form.get('target')
+        iperf_server = request.form.get('iperf_server')  # Get iperf server input
+        iperf_port = request.form.get('iperf_port')
+        iperf_duration = request.form.get('iperf_duration')
+
+        # **SECURE Input Validation**
+        if not target:
+            result = "Error: Target host/IP is required."
+            return render_template('network_tools.html', result=result, tool=tool)
+
+        # Validate target
+        if not (is_valid_hostname(target) or is_valid_ipv4_address(target) or is_valid_ipv6_address(target)):
+            result = "Error: Invalid target host/IP."
+            return render_template('network_tools.html', result=result, tool=tool)
+
+        # Validate iperf_server (if provided) - Basic check
+        if iperf_server and not (is_valid_hostname(iperf_server) or is_valid_ipv4_address(iperf_server) or is_valid_ipv6_address(iperf_server)):
+            result = "Error: Invalid iPerf server address."
+            return render_template('network_tools.html', result=result, tool=tool)
+
+        # Validate iperf_port and iperf_duration (basic checks)
+        if iperf_port:
+            try:
+                iperf_port = int(iperf_port)
+                if not 1 <= iperf_port <= 65535:  # Valid port range
+                    result = "Error: Invalid iPerf port number."
+                    return render_template('network_tools.html', result=result, tool=tool)
+            except ValueError:
+                result = "Error: Invalid iPerf port number."
+                return render_template('network_tools.html', result=result, tool=tool)
+
+        if iperf_duration:
+            try:
+                iperf_duration = int(iperf_duration)
+                if not iperf_duration > 0:
+                    result = "Error: Invalid iPerf duration."
+                    return render_template('network_tools.html', result=result, tool=tool)
+            except ValueError:
+                result = "Error: Invalid iPerf duration."
+                return render_template('network_tools.html', result=result, tool=tool)
+
+        if tool == 'ping':
+            try:
+                command = ['ping', '-c', '4', target]
+                process = subprocess.Popen(command, stdout=subprocess.PIPE,
+                                           stderr=subprocess.PIPE)
+                stdout, stderr = process.communicate()
+                result = stdout.decode() + stderr.decode()
+            except Exception as e:
+                result = f"Error: {e}"
+
+        elif tool == 'traceroute':
+            try:
+                # Check if traceroute is available and use the appropriate command
+                if os.name == 'nt':  # Windows
+                    command = ['tracert', target]
+                else:  # Unix-like systems (Linux, macOS)
+                    traceroute_path = '/bin/traceroute'
+                    if not os.path.exists(traceroute_path):
+                        result = f"Error: traceroute command not found at {traceroute_path} or /usr/sbin/traceroute"
+                        return render_template('network_tools.html', result=result, tool=tool)
+                    command = [traceroute_path, target]
+                process = subprocess.Popen(command, stdout=subprocess.PIPE,
+                                           stderr=subprocess.PIPE)
+                stdout, stderr = process.communicate()
+                result = stdout.decode() + stderr.decode()
+            except Exception as e:
+                result = f"Error: {e}"
+
+        elif tool == 'iperf':
+            iperf_command = ['iperf3', '-c', target]
+            if iperf_server:
+                iperf_command.extend(['-s', iperf_server])  # Corrected flag
+            if iperf_port:
+                iperf_command.extend(['-p', str(iperf_port)])  # Add port
+            if iperf_duration:
+                iperf_command.extend(['-t', str(iperf_duration)])  # Add duration
+            try:
+                process = subprocess.Popen(iperf_command, stdout=subprocess.PIPE,
+                                           stderr=subprocess.PIPE)
+                stdout, stderr = process.communicate()
+                result = stdout.decode() + stderr.decode()
+            except Exception as e:
+                result = f"Error: {e}"
+        else:
+            result = "Error: Invalid tool selected."
+
+    return render_template('network_tools.html', result=result, tool=tool)
 
 @app.errorhandler(404)
 def page_not_found(e):

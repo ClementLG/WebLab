@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Tools</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        .result-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .iperf-options {
+            display: none; /* Hide iPerf options by default */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Network Tools</h2>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('network_tools') }}">
+                    <div class="form-group">
+                        <label for="target">Target Host/IP</label>
+                        <input type="text" class="form-control" id="target" name="target" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tool">Select Tool</label>
+                        <select class="form-control" id="tool" name="tool">
+                            <option value="ping">Ping</option>
+                            <option value="traceroute">Traceroute</option>
+                            <option value="iperf">iPerf Speed Test</option>
+                        </select>
+                    </div>
+
+                    <div class="iperf-options">  <div class="form-group">
+                            <label for="iperf_port">iPerf Port (optional, default: 5201)</label>
+                            <input type="number" class="form-control" id="iperf_port" name="iperf_port"
+                                placeholder="5201">
+                        </div>
+                        <div class="form-group">
+                            <label for="iperf_duration">iPerf Duration (seconds, optional)</label>
+                            <input type="number" class="form-control" id="iperf_duration" name="iperf_duration"
+                                placeholder="e.g., 10">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-network-wired"></i> Run Test
+                    </button>
+                </form>
+                {% if result %}
+                <div class="result-container">
+                    <pre>{{ result }}</pre>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('tool').addEventListener('change', function() {
+            var iperfOptions = document.querySelector('.iperf-options'); // Select the wrapper
+
+            if (this.value === 'iperf') {
+                iperfOptions.style.display = 'block'; // Show the wrapper
+            } else {
+                iperfOptions.style.display = 'none'; // Hide the wrapper
+            }
+        });
+
+        // Initialize the display state based on the default selection
+        window.onload = function() {
+            var iperfOptions = document.querySelector('.iperf-options');
+            var toolSelect = document.getElementById('tool');
+
+            if (toolSelect.value !== 'iperf') {
+                iperfOptions.style.display = 'none';
+            } else {
+                 iperfOptions.style.display = 'block'; // Show on load if iperf is selected
+            }
+        };
+    </script>
+</body>
+
+</html>
