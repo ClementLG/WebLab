@@ -65,9 +65,16 @@
                                 <tbody>
                                     {% for file in files %}
                                     <tr>
-                                        <td><input type="checkbox" name="selected_files"
-                                                value="{{ file.name }}{{ file.ext }}"></td>
-                                        <td>{{ file.name }}</td>
+                                        <td><input type="checkbox" name="selected_files" value="{{ file.name }}{{ file.ext }}"></td>
+                                        <td>
+                                            {% if file.ext in ['.mp4', '.webm', '.ogg'] %}
+                                                <a href="{{ url_for('show_video', filename=file.name + file.ext) }}">
+                                                    {{ file.name }}
+                                                </a>
+                                            {% else %}
+                                                {{ file.name }}
+                                            {% endif %}
+                                        </td>
                                         <td>{{ file.ext }}</td>
                                         <td>{{ file.size }}</td>
                                     </tr>
