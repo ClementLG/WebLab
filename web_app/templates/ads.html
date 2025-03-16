@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertisements</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        .ad-container {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        .ad-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .ad-link {
+            display: block;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .ad-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        .ad-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .ad-description {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Specific styling for the travel ad image */
+        .travel-ad-image {
+            max-height: 200px;
+            width: auto;
+            display: block;
+            margin: 0 auto 10px;
+        }
+
+        /* Specific styling for the online course ad image */
+        .course-ad-image {
+            max-height: 250px;
+            /* Adjust as needed */
+            width: auto;
+            display: block;
+            margin: 0 auto 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Advertisements</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="#" class="ad-link">
+                    <div class="ad-container">
+                        <h3 class="ad-title">New Tech Gadget</h3>
+                        <img src="{{ url_for('static', filename='img/ad_tech.jpg') }}" alt="Tech Ad" class="ad-image">
+                        <p class="ad-description">Discover the latest innovation in wearable technology. Pre-order
+                            now!</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="#" class="ad-link">
+                    <div class="ad-container">
+                        <h3 class="ad-title">Summer Travel Deals</h3>
+                        <img src="{{ url_for('static', filename='img/ad_travel.jpg') }}" alt="Travel Ad"
+                            class="travel-ad-image">
+                        <p class="ad-description">Book your dream vacation today and save up to 40% on select
+                            destinations.</p>
+                        <button class="btn btn-success btn-sm">View Deals</button>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <a href="#" class="ad-link">
+                    <div class="ad-container">
+                        <h3 class="ad-title">Online Course</h3>
+                        <img src="{{ url_for('static', filename='img/ad_course.jpg') }}" alt="Course Ad"
+                            class="course-ad-image">
+                        <p class="ad-description">Upgrade your skills with our professional development courses.
+                            Enroll now!</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Optional: Simulate ad clicks (for demonstration)
+        document.querySelectorAll('.ad-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault(); // Stop the fake link from navigating
+                alert("Ad clicked! (This is a simulation)");
+                // In a real scenario, you might track the click or redirect
+            });
+        });
+    </script>
+</body>
+
+</html>

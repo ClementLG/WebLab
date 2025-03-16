@@ -151,5 +151,9 @@ def show_video(filename):
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+@app.route('/ads')
+def show_ads():
+    return render_template('ads.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
