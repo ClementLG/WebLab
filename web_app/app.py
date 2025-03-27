@@ -7,6 +7,7 @@ import time
 from werkzeug.utils import secure_filename
 import subprocess  # For executing commands
 from functions import *
+import psycopg2
 
 app = Flask(__name__)
 app.secret_key = "FakeSecretKey"  # Important pour les sessions et les flash messages
@@ -164,9 +165,11 @@ def network_tools():
 
     if request.method == 'POST':
         target = request.form.get('target')
-        iperf_server = request.form.get('iperf_server')  # Get iperf server input
-        iperf_port = request.form.get('iperf_port')
-        iperf_duration = request.form.get('iperf_duration')
+        sql_port = request.form.get('sql_port')
+        sql_db_name = request.form.get('sql_db_name')
+        sql_user = request.form.get('sql_user')
+        sql_password = request.form.get('sql_password')
+        sql_query = request.form.get('sql_query')
 
         # **SECURE Input Validation**
         if not target:
@@ -177,32 +180,6 @@ def network_tools():
         if not (is_valid_hostname(target) or is_valid_ipv4_address(target) or is_valid_ipv6_address(target)):
             result = "Error: Invalid target host/IP."
             return render_template('network_tools.html', result=result, tool=tool)
-
-        # Validate iperf_server (if provided) - Basic check
-        if iperf_server and not (is_valid_hostname(iperf_server) or is_valid_ipv4_address(iperf_server) or is_valid_ipv6_address(iperf_server)):
-            result = "Error: Invalid iPerf server address."
-            return render_template('network_tools.html', result=result, tool=tool)
-
-        # Validate iperf_port and iperf_duration (basic checks)
-        if iperf_port:
-            try:
-                iperf_port = int(iperf_port)
-                if not 1 <= iperf_port <= 65535:  # Valid port range
-                    result = "Error: Invalid iPerf port number."
-                    return render_template('network_tools.html', result=result, tool=tool)
-            except ValueError:
-                result = "Error: Invalid iPerf port number."
-                return render_template('network_tools.html', result=result, tool=tool)
-
-        if iperf_duration:
-            try:
-                iperf_duration = int(iperf_duration)
-                if not iperf_duration > 0:
-                    result = "Error: Invalid iPerf duration."
-                    return render_template('network_tools.html', result=result, tool=tool)
-            except ValueError:
-                result = "Error: Invalid iPerf duration."
-                return render_template('network_tools.html', result=result, tool=tool)
 
         if tool == 'ping':
             try:
@@ -232,19 +209,28 @@ def network_tools():
             except Exception as e:
                 result = f"Error: {e}"
 
-        elif tool == 'iperf':
-            iperf_command = ['iperf3', '-c', target]
-            if iperf_server:
-                iperf_command.extend(['-s', iperf_server])  # Corrected flag
-            if iperf_port:
-                iperf_command.extend(['-p', str(iperf_port)])  # Add port
-            if iperf_duration:
-                iperf_command.extend(['-t', str(iperf_duration)])  # Add duration
+        elif tool == 'sql' and sql_query:
             try:
-                process = subprocess.Popen(iperf_command, stdout=subprocess.PIPE,
-                                           stderr=subprocess.PIPE)
-                stdout, stderr = process.communicate()
-                result = stdout.decode() + stderr.decode()
+                # Securely handle database credentials!
+                conn = psycopg2.connect(
+                    host=target or os.environ.get('DB_HOST'),  # Use 'target' for SQL host
+                    port=sql_port or os.environ.get('DB_PORT'),
+                    dbname=sql_db_name or os.environ.get('DB_NAME'),
+                    user=sql_user or os.environ.get('DB_USER'),
+                    password=sql_password or os.environ.get('DB_PASSWORD')
+                )
+                cur = conn.cursor()
+                cur.execute(sql_query)
+                if cur.description:
+                    result = cur.fetchall()
+                    result = str(result)
+                else:
+                    result = "Query executed successfully, no results to display."
+                conn.commit()
+                cur.close()
+                conn.close()
+            except psycopg2.Error as e:
+                result = f"Error executing SQL: {e}"
             except Exception as e:
                 result = f"Error: {e}"
         else:

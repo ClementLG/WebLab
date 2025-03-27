@@ -16,8 +16,8 @@
             overflow-x: auto;
         }
 
-        .iperf-options {
-            display: none; /* Hide iPerf options by default */
+        .sql-options {
+            display: none;
         }
     </style>
 </head>
@@ -37,19 +37,32 @@
                         <select class="form-control" id="tool" name="tool">
                             <option value="ping">Ping</option>
                             <option value="traceroute">Traceroute</option>
-                            <option value="iperf">iPerf Speed Test</option>
+                            <option value="sql">SQL Query</option>
                         </select>
                     </div>
 
-                    <div class="iperf-options">  <div class="form-group">
-                            <label for="iperf_port">iPerf Port (optional, default: 5201)</label>
-                            <input type="number" class="form-control" id="iperf_port" name="iperf_port"
-                                placeholder="5201">
+                    <div class="sql-options">
+                        <div class="form-group">
+                            <label for="sql_port">PostgreSQL Port</label>
+                            <input type="number" class="form-control" id="sql_port" name="sql_port"
+                                placeholder="Default: 5432">
                         </div>
                         <div class="form-group">
-                            <label for="iperf_duration">iPerf Duration (seconds, optional)</label>
-                            <input type="number" class="form-control" id="iperf_duration" name="iperf_duration"
-                                placeholder="e.g., 10">
+                            <label for="sql_db_name">PostgreSQL Database</label>
+                            <input type="text" class="form-control" id="sql_db_name" name="sql_db_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="sql_user">PostgreSQL User</label>
+                            <input type="text" class="form-control" id="sql_user" name="sql_user">
+                        </div>
+                        <div class="form-group">
+                            <label for="sql_password">PostgreSQL Password</label>
+                            <input type="password" class="form-control" id="sql_password" name="sql_password">
+                        </div>
+                        <div class="form-group">
+                            <label for="sql_query">PostgreSQL Query</label>
+                            <textarea class="form-control" id="sql_query" name="sql_query" rows="3"
+                                placeholder="Enter your SQL query here"></textarea>
                         </div>
                     </div>
 
@@ -75,24 +88,24 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         document.getElementById('tool').addEventListener('change', function() {
-            var iperfOptions = document.querySelector('.iperf-options'); // Select the wrapper
+            var sqlOptions = document.querySelector('.sql-options');
 
-            if (this.value === 'iperf') {
-                iperfOptions.style.display = 'block'; // Show the wrapper
+            if (this.value === 'sql') {
+                sqlOptions.style.display = 'block';
             } else {
-                iperfOptions.style.display = 'none'; // Hide the wrapper
+                sqlOptions.style.display = 'none';
             }
         });
 
         // Initialize the display state based on the default selection
         window.onload = function() {
-            var iperfOptions = document.querySelector('.iperf-options');
+            var sqlOptions = document.querySelector('.sql-options');
             var toolSelect = document.getElementById('tool');
 
-            if (toolSelect.value !== 'iperf') {
-                iperfOptions.style.display = 'none';
+            if (toolSelect.value === 'sql') {
+                sqlOptions.style.display = 'block';
             } else {
-                 iperfOptions.style.display = 'block'; // Show on load if iperf is selected
+                sqlOptions.style.display = 'none';
             }
         };
     </script>
