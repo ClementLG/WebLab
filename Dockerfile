@@ -1,5 +1,5 @@
 # Use an official Python image as a base image
-FROM python:3.12-alpine
+FROM python:3.13-alpine
 
 # Set the working directory in the container
 WORKDIR /web_app
@@ -8,6 +8,7 @@ WORKDIR /web_app
 COPY ./web_app /web_app
 
 # Install dependencies
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the port on which the application will run
